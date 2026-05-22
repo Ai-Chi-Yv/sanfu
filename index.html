@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>三福 · 情绪盲盒便利店 | 潮趣好搭子</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f7e9d7 0%, #fcecd8 100%);
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        /* 主容器 - 手机尺寸卡片 */
+        .phone-container {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            background: #fffef7;
+            border-radius: 48px 48px 40px 40px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 215, 150, 0.5);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        /* 便利店风格头部 */
+        .store-header {
+            background: linear-gradient(135deg, #ffd966 0%, #ffb347 100%);
+            padding: 24px 20px 20px 20px;
+            text-align: center;
+            border-bottom-left-radius: 28px;
+            border-bottom-right-radius: 28px;
+            position: relative;
+        }
+
+        .store-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #2d1b0c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .store-header h1 span {
+            background: white;
+            padding: 0 10px;
+            border-radius: 40px;
+            font-size: 22px;
+            box-shadow: inset 0 -1px 0 #e9c27c;
+        }
+
+        .sub {
+            color: #2c1a0a;
+            font-weight: 600;
+            margin-top: 8px;
+            font-size: 14px;
+            background: #ffe6b3aa;
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
+        }
+
+        .slogan-tag {
+            background: #2d1b0c;
+            color: #ffde9c;
+            padding: 6px 12px;
+            border-radius: 32px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 12px;
+        }
+
+        /* 货架区域 */
+        .shelf-area {
+            padding: 28px 20px 20px;
+            background: #fffaf2;
+        }
+
+        .emotion-board {
+            background: #fff1e0;
+            border-radius: 60px;
+            padding: 12px 16px;
+            text-align: center;
+            margin-bottom: 28px;
+            box-shadow: inset 0 1px 3px #0001, 0 6px 12px -8px rgba(0,0,0,0.1);
+        }
+
+        .current-emotion-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #b97f44;
+            letter-spacing: 1px;
+        }
+
+        .emotion-name {
+            font-size: 28px;
+            font-weight: 800;
+            color: #bc6f2c;
+            margin: 8px 0 4px;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .emotion-desc {
+            font-size: 13px;
+            color: #ad7a48;
+        }
+
+        /* 盲盒扭蛋机视觉 */
+        .blindbox-machine {
+            background: #f2e3d4;
+            border-radius: 48px;
+            padding: 24px 20px;
+            text-align: center;
+            margin: 10px 0 20px;
+            box-shadow: 0 8px 0 #c2a07e;
+            transition: transform 0.1s ease;
+        }
+
+        .capsule-icon {
+            font-size: 70px;
+            filter: drop-shadow(2px 8px 12px rgba(0,0,0,0.2));
+            cursor: pointer;
+            transition: 0.1s linear;
+            display: inline-block;
+        }
+
+        .capsule-icon:active {
+            transform: scale(0.94);
+        }
+
+        .blind-btn {
+            background: #ff9f4b;
+            border: none;
+            width: 80%;
+            margin-top: 16px;
+            padding: 16px 0;
+            font-size: 20px;
+            font-weight: 800;
+            border-radius: 60px;
+            color: #2e241f;
+            box-shadow: 0 4px 0 #b45f2b;
+            cursor: pointer;
+            transition: 0.07s linear;
+            font-family: inherit;
+            letter-spacing: 2px;
+        }
+
+        .blind-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #b45f2b;
+        }
+
+        /* 搭配结果卡片 */
+        .result-card {
+            background: white;
+            border-radius: 32px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            border: 1px solid #ffe0b5;
+            transition: all 0.3s;
+        }
+
+        .result-title {
+            font-weight: 800;
+            font-size: 18px;
+            color: #d4832a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 5px solid #ffb347;
+            padding-left: 12px;
+            margin-bottom: 16px;
+        }
+
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: space-between;
+            margin: 16px 0;
+        }
+
+        .product-item {
+            flex: 1;
+            min-width: 80px;
+            background: #fef7e8;
+            border-radius: 24px;
+            padding: 12px 6px;
+            text-align: center;
+        }
+
+        .product-emoji {
+            font-size: 42px;
+            display: block;
+        }
+
+        .product-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            color: #654321;
+        }
+
+        .product-price {
+            font-size: 13px;
+            font-weight: 700;
+            color: #f2811a;
+            margin-top: 4px;
+        }
+
+        .buy-reason {
+            background: #f1ede5;
+            padding: 12px;
+            border-radius: 24px;
+            font-size: 13px;
+            color: #644c34;
+            margin: 12px 0;
+            font-style: italic;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .btn-primary, .btn-outline {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.1s;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #ff9142;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1.5px solid #ffb156;
+            color: #b95f1a;
+        }
+
+        .btn-primary:active, .btn-outline:active {
+            transform: scale(0.97);
+        }
+
+        /* 分享海报区 */
+        .share-preview {
+            background: #fff5e9;
+            border-radius: 28px;
+            margin-top: 18px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            border: 1px dashed #ffc489;
+        }
+
+        /* 底部导航栏 */
+        .bottom-tab {
+            display: flex;
+            background: white;
+            border-top: 1px solid #f0e2d0;
+            padding: 10px 24px 14px;
+            justify-content: space-between;
+        }
+
+        .tab-item {
+            text-align: center;
+            font-size: 12px;
+            color: #b87b42;
+            font-weight: 500;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 30%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            background: #2e241fdd;
+            backdrop-filter: blur(12px);
+            color: #ffefcf;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 200;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(1);}
+            80% { transform: scale(1.08);}
+            100% { transform: scale(1);}
+        }
+
+        .shake {
+            animation: bounce 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+<div class="phone-container" id="app">
+    <div class="store-header">
+        <h1>🏪 情绪盲盒便利店 <span>SANFU</span></h1>
+        <div class="sub">⚡ 每天一种心情 · 开盒有惊喜</div>
+        <div class="slogan-tag">#潮趣好搭子 · 生活新「搭」案</div>
+    </div>
+
+    <div class="shelf-area">
+        <!-- 情绪展示区 -->
+        <div class="emotion-board" id="emotionBoard">
+            <div class="current-emotion-label">🌱 今日心情探测器</div>
+            <div class="emotion-name" id="emotionName">🤔 等待开启</div>
+            <div class="emotion-desc" id="emotionDesc">点击下方扭蛋，抽取你的情绪盲盒～</div>
+        </div>
+
+        <!-- 盲盒扭蛋机 -->
+        <div class="blindbox-machine" id="machineZone">
+            <div class="capsule-icon" id="capsuleIcon">🥚🎁</div>
+            <button class="blind-btn" id="drawBtn">✨ 扭一下 · 开盲盒 ✨</button>
+        </div>
+
+        <!-- 搭配结果动态显示区 -->
+        <div id="resultArea" style="min-height: 280px;"></div>
+
+        <!-- 分享引导区 (动态同步) -->
+        <div class="share-preview" id="shareBar" style="justify-content: center;">
+            <span>💬 点击下方「分享搭子」生成你的情绪解救卡 →</span>
+        </div>
+    </div>
+
+    <div class="bottom-tab">
+        <div class="tab-item">🏠 情绪便利店</div>
+        <div class="tab-item">🎁 我的搭案</div>
+        <div class="tab-item" id="fakeShareBtn" style="color:#ff9142;">📤 分享搭子</div>
+    </div>
+</div>
+<div id="toast" class="toast-msg"></div>
+
+<script>
+    // ------------- 情绪库 & 三福多品类组合库 (潮趣好搭子)
+    const EMOTIONS = [
+        { name: "😩 周一摸鱼症", desc: "灵魂出走，急需快乐补给", icon: "🐟" },
+        { name: "💕 约会前焦虑", desc: "心跳加速，想要完美登场", icon: "💘" },
+        { name: "🎉 面试成功狂喜", desc: "爆棚自信，庆祝高光时刻", icon: "✨" },
+        { name: "😴 熬夜赶工颓", desc: "疲惫但倔强，需要治愈", icon: "☕" },
+        { name: "🌸 春日小确幸", desc: "莫名轻盈，想拥抱美好", icon: "🌼" },
+        { name: "🎮 周末宅家爽", desc: "自由懒散，娱乐至上", icon: "🕹️" }
+    ];
+
+    // 三福多品类组合池 (每个组合都是3件不同品类: 服装/配饰/潮玩/美妆)
+    const PRODUCT_SETS = [
+        {
+            items: [
+                { emoji: "👕", name: "宽松落肩T恤", price: "¥89", category: "男女装" },
+                { emoji: "💄", name: "丝绒唇釉", price: "¥59", category: "美妆" },
+                { emoji: "🧸", name: "奶龙盲盒公仔", price: "¥49", category: "潮玩" }
+            ],
+            reason: "用舒适T恤兜住困意，奶龙为你充电，唇釉点亮好气色。三福陪你摸鱼也时髦~",
+            tag: "摸鱼能量包"
+        },
+        {
+            items: [
+                { emoji: "👗", name: "法式碎花裙", price: "¥169", category: "女装" },
+                { emoji: "🕶️", name: "复古猫眼墨镜", price: "¥79", category: "配饰" },
+                { emoji: "🎀", name: "甜心发箍礼盒", price: "¥39", category: "配饰" }
+            ],
+            reason: "约会战袍+墨镜，又甜又飒，发箍点缀小心机。三福帮你稳住心动氛围。",
+            tag: "心动急救包"
+        },
+        {
+            items: [
+                { emoji: "👔", name: "机能风工装衬衫", price: "¥139", category: "男装" },
+                { emoji: "⌚", name: "复古电子手表", price: "¥99", category: "配饰" },
+                { emoji: "📿", name: "串珠DIY手链套装", price: "¥29", category: "潮玩" }
+            ],
+            reason: "职场新星气场全开，机能风搭出自信节奏，腕表纪念荣耀时刻。三福为高光加码！",
+            tag: "高光庆祝包"
+        },
+        {
+            items: [
+                { emoji: "🧥", name: "软糯针织开衫", price: "¥129", category: "女装" },
+                { emoji: "🧴", name: "舒缓香氛护手霜", price: "¥35", category: "美妆" },
+                { emoji: "🐱", name: "治愈猫爪捏捏乐", price: "¥19", category: "潮玩" }
+            ],
+            reason: "软糯外套包裹疲惫，护手霜带来暖香，捏捏乐释放压力。三福是你温柔后盾。",
+            tag: "熬夜回血包"
+        },
+        {
+            items: [
+                { emoji: "👟", name: "复古德训鞋", price: "¥159", category: "鞋包" },
+                { emoji: "💅", name: "果冻色指甲油", price: "¥29", category: "美妆" },
+                { emoji: "🌻", name: "向日葵积木花束", price: "¥45", category: "潮玩" }
+            ],
+            reason: "踏青配色德训鞋+明媚甲油，手作积木花留住春日浪漫。把好心情穿戴上身~",
+            tag: "小确幸花束"
+        },
+        {
+            items: [
+                { emoji: "🩳", name: "印花短袖衬衫", price: "¥99", category: "男女装" },
+                { emoji: "🎧", name: "像素耳机包", price: "¥49", category: "配饰" },
+                { emoji: "🎮", name: "怀旧游戏机钥匙扣", price: "¥25", category: "潮玩" }
+            ],
+            reason: "宅家穿搭必备，像素包+游戏机挂饰，玩趣十足！和三福一起开黑躺赢~",
+            tag: "宅趣补给包"
+        }
+    ];
+
+    // 给每个情绪映射随机组合但保留趣味，同时关联 "情绪解救包"
+    // 通过伪随机但结合情绪索引使组合有适当变化，但又不完全固定，增强盲盒感
+    let currentEmotion = null;
+    let currentCombo = null;       // 存储当前生成的组合对象
+    let currentEmotionIndex = -1;
+
+    // 辅助函数：展示toast
+    function showToast(msg, duration = 1800) {
+        const toastEl = document.getElementById('toast');
+        toastEl.innerText = msg;
+        toastEl.style.opacity = '1';
+        setTimeout(() => {
+            toastEl.style.opacity = '0';
+        }, duration);
+    }
+
+    // 根据情绪索引获取一个组合 (稍微差异化，但盲盒随机感更重要，完全随机+情绪标签搭配)
+    function getRandomComboByEmotion(emotionIdx) {
+        // 盲盒特性: 直接在所有组合中随机，但让组合的情绪理由有一些匹配映射 (部分趣味)
+        let randomIndex = Math.floor(Math.random() * PRODUCT_SETS.length);
+        // 但为了增加一点关联感，有时候根据情绪idx微调，但不强制，保持惊喜
+        if (emotionIdx === 0 && Math.random() > 0.6) randomIndex = 0;   // 摸鱼优先摸鱼包
+        if (emotionIdx === 1 && Math.random() > 0.5) randomIndex = 1;   // 约会优先心动包
+        if (emotionIdx === 2 && Math.random() > 0.5) randomIndex = 2;   // 成功派对高光包
+        if (emotionIdx === 3 && Math.random() > 0.5) randomIndex = 3;   // 熬夜颓废回血包
+        if (emotionIdx === 4 && Math.random() > 0.5) randomIndex = 4;   // 小确幸花束
+        if (emotionIdx === 5 && Math.random() > 0.6) randomIndex = 5;   // 宅家对应宅趣包
+        return { ...PRODUCT_SETS[randomIndex], comboId: randomIndex };
+    }
+
+    // 渲染当前的情绪+搭配结果
+    function renderResult(emotionObj, comboObj, isNewDraw = true) {
+        const resultDiv = document.getElementById('resultArea');
+        if (!emotionObj || !comboObj) return;
+
+        // 构建三个商品html
+        const itemsHtml = comboObj.items.map(item => `
+            <div class="product-item">
+                <span class="product-emoji">${item.emoji}</span>
+                <div class="product-name">${item.name}</div>
+                <div class="product-price">${item.price}</div>
+                <div style="font-size:10px; color:#bc8f6a;">${item.category}</div>
+            </div>
+        `).join('');
+
+        const resultHtml = `
+            <div class="result-card" id="dynamicResultCard">
+                <div class="result-title">
+                    🎁 你的「${comboObj.tag || '潮趣解救包'}」已上线
+                </div>
+                <div class="product-grid">
+                    ${itemsHtml}
+                </div>
+                <div class="buy-reason">
+                    💡 ${comboObj.reason}
+                </div>
+                <div class="action-buttons">
+                    <div class="btn-primary" id="goBuyBtn">🛒 一键加购 · 治愈自己</div>
+                    <div class="btn-outline" id="reshakeBtn">🔄 再摇一个搭案</div>
+                </div>
+            </div>
+        `;
+        resultDiv.innerHTML = resultHtml;
+
+        // 绑定动态按钮
+        const goBuy = document.getElementById('goBuyBtn');
+        const reshake = document.getElementById('reshakeBtn');
+        if (goBuy) {
+            goBuy.addEventListener('click', () => {
+                showToast(`✨ 已为你打开三福小程序 · ${comboObj.items.map(i=>i.name).join('、')} 加入购物车模拟`, 1500);
+                // 模拟跳转小程序或领券行为，符合商业转化
+                setTimeout(() => {
+                    showToast('🎁 领券更优惠～ 快去三福门店/小程序逛逛吧', 1500);
+                }, 1200);
+            });
+        }
+        if (reshake) {
+            reshake.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // 重新抽取搭配（但情绪保留当前，刷新组合 保持同情绪下新搭案）
+                const newCombo = getRandomComboByEmotion(currentEmotionIndex);
+                currentCombo = newCombo;
+                renderResult(currentEmotion, currentCombo, false);
+                showToast(`✨ 新「搭」案出现！和三福一起玩转潮趣`, 1000);
+                updateSharePreview(); // 更新分享文案
+            });
+        }
+        updateSharePreview();
+    }
+
+    // 更新底部的分享卡片预览，模拟生成分享海报数据
+    function updateSharePreview() {
+        const shareBar = document.getElementById('shareBar');
+        if (!currentEmotion || !currentCombo) {
+            shareBar.innerHTML = `<span>💡 扭蛋开启后，生成专属“情绪解救卡”分享好友~</span>`;
+            return;
+        }
+        const emotionShort = currentEmotion.name;
+        const comboName = currentCombo.tag || '潮趣好搭子';
+        const itemsShort = currentCombo.items.map(i => i.name.split(' ')[0]).join(' · ');
+        shareBar.innerHTML = `
+            <div style="display: flex; justify-content: space-between; width:100%; align-items:center;">
+                <span style="font-weight:600;">📸 ${emotionShort} → 「${comboName}」</span>
+                <span style="background:#ffd966; padding:4px 12px; border-radius:50px; font-size:12px;" id="genPosterBtn">✨ 生成分享卡</span>
+            </div>
+        `;
+        const posterBtn = document.getElementById('genPosterBtn');
+        if (posterBtn) {
+            posterBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                generateShareCard();
+            });
+        }
+    }
+
+    // 生成类似“情绪搭子”海报的模拟分享（通过html2canvas风格模拟，但为了纯原生轻量，采用alert+图片信息+可复制文案）
+    function generateShareCard() {
+        if (!currentEmotion || !currentCombo) {
+            showToast("请先扭蛋抽取情绪盲盒～");
+            return;
+        }
+        // 模拟生成带有潮趣文案的分享内容（符合H5分享卡片样式描述，因为直接canvas需额外库，这里用最直观的分享文本+精美模拟弹窗）
+        const emotionText = currentEmotion.name;
+        const comboTag = currentCombo.tag;
+        const productNames = currentCombo.items.map(i => i.name).join(' + ');
+        const reasonText = currentCombo.reason.substring(0, 50);
+        const shareContent = `【三福情绪盲盒】${emotionText} 🎁 我的潮趣解救包：${comboTag}\n搭配清单：${productNames}\n${reasonText}\n#生活新搭案 #潮趣好搭子 快来三福get同款！`;
+        
+        // 模拟现代H5分享面板
+        if (navigator.share) {
+            navigator.share({
+                title: '三福 · 情绪盲盒便利店',
+                text: shareContent,
+                url: window.location.href,
+            }).catch(() => {
+                fallbackCopy(shareContent);
+            });
+        } else {
+            fallbackCopy(shareContent);
+        }
+    }
+    
+    function fallbackCopy(text) {
+        // 复制到剪贴板 + 视觉提示
+        navigator.clipboard.writeText(text).then(() => {
+            showToast("📋 分享文案已复制！快发给你的潮趣搭子~", 1800);
+            // 额外弹个模拟“卡片” 视觉反馈
+            const tempDiv = document.createElement('div');
+            tempDiv.style.position = 'fixed';
+            tempDiv.style.bottom = '30%';
+            tempDiv.style.left = '10%';
+            tempDiv.style.width = '80%';
+            tempDiv.style.background = '#fff2e0';
+            tempDiv.style.borderRadius = '32px';
+            tempDiv.style.padding = '16px';
+            tempDiv.style.boxShadow = '0 12px 28px black';
+            tempDiv.style.zIndex = '999';
+            tempDiv.style.fontSize = '12px';
+            tempDiv.innerHTML = `<div style="font-weight:800; margin-bottom:6px;">🧾 情绪搭子卡已生成</div><div>${text.substring(0,100)}...</div><div style="margin-top:8px;color:#ff9142;">✅ 快去分享给朋友组局！</div>`;
+            document.body.appendChild(tempDiv);
+            setTimeout(() => tempDiv.remove(), 2200);
+        }).catch(() => {
+            alert("手动复制: \n" + text);
+        });
+    }
+
+    // 主要抽取盲盒逻辑：随机情绪+随机搭配组合
+    function drawBlindBox() {
+        // 随机情绪
+        const randomEmoIndex = Math.floor(Math.random() * EMOTIONS.length);
+        const emotion = EMOTIONS[randomEmoIndex];
+        currentEmotionIndex = randomEmoIndex;
+        currentEmotion = emotion;
+        
+        // 随机组合（潮趣搭案）
+        const combo = getRandomComboByEmotion(randomEmoIndex);
+        currentCombo = combo;
+        
+        // 更新情绪面板
+        const emotionNameDiv = document.getElementById('emotionName');
+        const emotionDescDiv = document.getElementById('emotionDesc');
+        emotionNameDiv.innerHTML = `${emotion.name}`;
+        emotionDescDiv.innerHTML = `${emotion.desc}  ·  三福为你准备了解救方案✨`;
+        
+        // 加一点动画反馈
+        const capsule = document.getElementById('capsuleIcon');
+        capsule.classList.add('shake');
+        setTimeout(() => capsule.classList.remove('shake'), 300);
+        
+        // 渲染搭配结果区域
+        renderResult(currentEmotion, currentCombo, true);
+        showToast(`🎉 抽中「${emotion.name}」！解锁潮趣好搭子～`, 1500);
+    }
+
+    // 手动再次触发一模一样
+    function initEvent() {
+        const drawBtn = document.getElementById('drawBtn');
+        drawBtn.addEventListener('click', () => {
+            drawBlindBox();
+        });
+        // 底部模拟分享tab
+        const fakeShare = document.getElementById('fakeShareBtn');
+        if (fakeShare) {
+            fakeShare.addEventListener('click', () => {
+                if (currentEmotion && currentCombo) {
+                    generateShareCard();
+                } else {
+                    showToast("先扭个盲盒，再分享你的情绪搭案吧！");
+                }
+            });
+        }
+    }
+
+    // 初始没有任何抽取，显示默认引导
+    function defaultInit() {
+        document.getElementById('emotionName').innerHTML = "🥚 扭蛋待开启";
+        document.getElementById('emotionDesc').innerHTML = "点击下方扭蛋机，抽取今日情绪 & 潮趣搭案";
+        document.getElementById('resultArea').innerHTML = `
+            <div class="result-card" style="text-align:center; opacity:0.8;">
+                <div style="padding:12px;">🎰 扭出你的「生活新搭案」<br>三福多品类潮趣组合，陪你探索日常惊喜～</div>
+            </div>
+        `;
+        initEvent();
+    }
+
+    defaultInit();
+</script>
+</body>
+</html>
